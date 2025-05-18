@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Explorar Ecosistemas | ODS 14</title>
+</head>
+<body>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <h4>(ODS 14: Vida Submarina)</h4>
+    <form action="/ecosistemas" method="post">
+        <p>Selecciona el ecosistema marino que deseas explorar:</p>
+        <input type="radio" name="ecosistema" value="Arrecife de Coral" required> Arrecife de Coral<br>
+        <input type="radio" name="ecosistema" value="Mar Abierto"> Mar Abierto<br>
+        <input type="radio" name="ecosistema" value="Pradera Marina"> Pradera Marina<br>
+        <input type="radio" name="ecosistema" value="Océano Profundo"> Océano Profundo<br><br>
+        <button type="submit">Aceptar</button>
+        <button type="reset">Cancelar</button>
+        <button type="button" onclick="history.back()">Retroceder</button>
+    </form>
+</body>
+</html>
