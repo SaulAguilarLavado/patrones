@@ -1,6 +1,6 @@
 package com.ods14.patrones.controller;
 
-import com.ods14.patrones.model.ProcedimientoConservacion;
+import com.ods14.patrones.model.ProcedimientoInsertUsuario;
 import com.ods14.patrones.model.Usuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +21,12 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String usuario, @RequestParam String contrasena, Model model, HttpSession session) {
+    public String login(@RequestParam String usuario, @RequestParam String contrasena, Model model,
+            HttpSession session) {
         Usuario user = Usuario.buscarPorNombre(usuario);
         if (user != null && user.getContrasena().equals(contrasena)) {
             session.setAttribute("usuario", user);
-            return "redirect:/ecosistemas";
+            return "redirect:/info/ecosistemas";
         } else {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             return "login";
@@ -40,7 +41,7 @@ public class UsuarioController {
     @PostMapping("/signup")
     public String signup(@RequestParam String usuario, @RequestParam String contrasena, Model model) {
         try {
-            ProcedimientoConservacion proc = new ProcedimientoConservacion("sp_insert_usuario", 2);
+            ProcedimientoInsertUsuario proc = new ProcedimientoInsertUsuario();
             proc.ejecutar(usuario, contrasena);
             return "redirect:/login";
         } catch (Exception e) {
