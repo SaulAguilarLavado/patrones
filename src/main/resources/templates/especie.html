@@ -1,28 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-    <form action="/info/especies" method="post">
-    <label>Nombre científico:</label>
-    <input type="text" name="nombreCientifico" required>
-    <label>Nombre común:</label>
-    <input type="text" name="nombreComun">
-    <label>Estado de conservación:</label>
-    <select name="estadoConservacion" required>
-        <option value="Preocupación Menor">Preocupación Menor</option>
-        <option value="Vulnerable">Vulnerable</option>
-        <option value="En Peligro">En Peligro</option>
-        <option value="En Peligro Crítico">En Peligro Crítico</option>
-    </select>
-    <label>Descripción:</label>
-    <textarea name="descripcion"></textarea>
-    <button type="submit">Aceptar</button>
-    <button type="reset">Cancelar</button>
-    <button type="button" onclick="history.back()">Retroceder</button>
-</form>
+    <!-- Barra de módulos -->
+    <div class="modulos">
+        <div class="modulo">Login / Signup</div>
+        <div class="modulo">Ecosistema</div>
+        <div class="modulo active">Especie</div>
+        <div class="modulo">Biodiversidad</div>
+        <div class="modulo">Terminar</div>
+    </div>
+    <!-- Barra de números -->
+    <div class="numeros">
+        <div class="numero">1</div>
+        <div class="numero">2</div>
+        <div class="numero active">3</div>
+        <div class="numero">4</div>
+        <div class="numero">5</div>
+    </div>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <h4>(ODS 14: Vida Submarina)</h4>
+    <div class="contenedor-formulario">
+        <h3>ESPECIE</h3>
+        <form action="/info/especies" method="post">
+            <input type="hidden" name="idEcosistema" th:value="${especie.idEcosistema}">
+            <!-- Resto de tus campos -->
+            <label>¿Cuál es el nombre científico de la especie?</label><br>
+            <input type="text" name="nombreCientifico" required><br>
+            <label>¿Cuál es el nombre común de la especie?</label><br>
+            <input type="text" name="nombreComun"><br>
+            <label>¿Cuál es su estado de conservación?</label><br>
+            <select name="estadoConservacion" required>
+                <option value="Preocupación Menor">Preocupación Menor</option>
+                <option value="Vulnerable">Vulnerable</option>
+                <option value="En Peligro">En Peligro</option>
+                <option value="En Peligro Crítico">En Peligro Crítico</option>
+            </select><br>
+            <label>¿Puedes dar una breve descripción de la especie?</label><br>
+            <textarea name="descripcion"></textarea><br>
+            <div class="form-buttons">
+                <button type="submit">Aceptar</button>
+                <button type="reset">Cancelar</button>
+                <button type="button" class="btn-retroceder" onclick="history.back()">Retroceder</button>
+            </div>
+        </form>
+    </div>
+    
 </body>
 </html>

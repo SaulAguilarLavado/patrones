@@ -1,17 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-    <form action="/info/biodiversidad" method="post">
-    <label>Descripción:</label>
-    <textarea name="descripcion"></textarea>
-    <button type="submit">Aceptar</button>
-    <button type="reset">Cancelar</button>
-    <button type="button" onclick="history.back()">Retroceder</button>
-</form>
+    <!-- Barra de módulos -->
+    <div class="modulos">
+        <div class="modulo">Login / Signup</div>
+        <div class="modulo">Ecosistema</div>
+        <div class="modulo">Especie</div>
+        <div class="modulo active">Biodiversidad</div>
+        <div class="modulo">Terminar</div>
+    </div>
+    <!-- Barra de números -->
+    <div class="numeros">
+        <div class="numero">1</div>
+        <div class="numero">2</div>
+        <div class="numero">3</div>
+        <div class="numero active">4</div>
+        <div class="numero">5</div>
+    </div>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <h4>(ODS 14: Vida Submarina)</h4>
+    <div class="contenedor-formulario">
+        <h3>BIODIVERSIDAD</h3>
+        <form action="/info/biodiversidad" method="post">
+            <input type="hidden" name="idEcosistema" th:value="${biodiversidad.idEcosistema}">
+            <label>¿Cómo describirías esta biodiversidad?</label><br>
+            <textarea name="descripcion"></textarea> <br>
+            <div class="form-buttons">
+                <button type="submit">Aceptar</button>
+                <button type="reset">Cancelar</button>
+                <button type="button" class="btn-retroceder" onclick="history.back()">Retroceder</button>
+            </div>
+        </form>
+    </div>
+    
 </body>
 </html>

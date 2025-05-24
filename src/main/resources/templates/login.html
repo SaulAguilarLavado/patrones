@@ -1,21 +1,42 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login | ODS 14</title>
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
+    <!-- Barra de módulos -->
+    <div class="modulos">
+        <div class="modulo active">Login / Signup</div>
+        <div class="modulo">Ecosistema</div>
+        <div class="modulo">Especie</div>
+        <div class="modulo">Biodiversidad</div>
+        <div class="modulo">Terminar</div>
+    </div>
+    <!-- Barra de números -->
+    <div class="numeros">
+        <div class="numero active">1</div>
+        <div class="numero">2</div>
+        <div class="numero">3</div>
+        <div class="numero">4</div>
+        <div class="numero">5</div>
+    </div>
     <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
     <h4>(ODS 14: Vida Submarina)</h4>
-    <h3>LOGIN</h3>
-    <form action="/login" method="post">
-        <label>Usuario:</label>
-        <input type="text" name="usuario" required><br><br>
-        <label>Contraseña:</label>
-        <input type="password" name="contrasena" required><br><br>
-        <button type="submit">Aceptar</button>
-        <button type="reset">Cancelar</button>
-    </form>
-    <p>¿No tienes cuenta? <a href="/signup">Regístrate aquí</a></p>
+    <div class="contenedor-formulario">
+        <h3>LOGIN</h3>
+        <form action="/login" method="post">
+            <label>Usuario:</label>
+            <input type="text" name="usuario" required><br><br>
+            <label>Contraseña:</label>
+            <input type="password" name="contrasena" required><br><br>
+            <div class="form-buttons">
+                <button type="submit">Aceptar</button>
+                <button type="reset">Cancelar</button>
+            </div>
+        </form>
+        <p>¿No tienes cuenta? <a href="/signup">Regístrate aquí</a></p>
+    </div>
 </body>
 </html>
