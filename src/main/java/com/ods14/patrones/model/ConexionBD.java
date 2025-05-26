@@ -9,7 +9,7 @@ public class ConexionBD {
     private Connection conexion;
     private final String URL = "jdbc:mysql://localhost:3306/ConservacionMarina";
     private final String USUARIO = "root";
-    private final String CONTRASENA = "saul_UTP11";
+    private final String CONTRASENA = "admin";
 
     private ConexionBD() {
         try {
