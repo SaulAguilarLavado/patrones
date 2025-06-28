@@ -26,7 +26,7 @@ public class EcosistemaInfoController {
     }
 
     @GetMapping("/especies")
-    public String mostrarEspecie(@RequestParam("idEcosistema") int idEcosistema, Model model) {
+    public String mostrarEspecie(@RequestParam int idEcosistema, Model model) {
         Especie especie = new Especie();
         especie.setIdEcosistema(idEcosistema);
         model.addAttribute("especie", especie);
@@ -48,7 +48,7 @@ public class EcosistemaInfoController {
     }
 
     @GetMapping("/biodiversidad")
-    public String mostrarBiodiversidad(@RequestParam("idEcosistema") int idEcosistema, Model model) {
+    public String mostrarBiodiversidad(@RequestParam int idEcosistema, Model model) {
         Biodiversidad biodiversidad = new Biodiversidad();
         biodiversidad.setIdEcosistema(idEcosistema);
         model.addAttribute("biodiversidad", biodiversidad);
