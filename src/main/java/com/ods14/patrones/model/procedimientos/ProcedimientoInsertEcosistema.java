@@ -1,8 +1,10 @@
-package com.ods14.patrones.model;
+package com.ods14.patrones.model.procedimientos;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import com.ods14.patrones.model.conexion.ConexionBD;
 
 public class ProcedimientoInsertEcosistema implements ProcedimientoPrototype {
     private final String nombreProcedimiento = "sp_insert_ecosistema";

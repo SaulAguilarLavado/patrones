@@ -1,7 +1,9 @@
 package com.ods14.patrones.controller;
 
-import com.ods14.patrones.model.ProcedimientoInsertUsuario;
 import com.ods14.patrones.model.Usuario;
+import com.ods14.patrones.model.entidades.RegistroFacade;
+import com.ods14.patrones.model.procedimientos.ProcedimientoInsertUsuario;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsuarioController {
+
+    private final RegistroFacade facade = new RegistroFacade();
 
     @GetMapping("/login")
     public String mostrarLogin() {
@@ -41,8 +45,7 @@ public class UsuarioController {
     @PostMapping("/signup")
     public String signup(@RequestParam String usuario, @RequestParam String contrasena, Model model) {
         try {
-            ProcedimientoInsertUsuario proc = new ProcedimientoInsertUsuario();
-            proc.ejecutar(usuario, contrasena);
+            facade.registrarUsuario(usuario, contrasena);
             return "redirect:/login";
         } catch (Exception e) {
             model.addAttribute("error", "El usuario ya existe o hubo un error.");

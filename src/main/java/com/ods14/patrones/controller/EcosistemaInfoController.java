@@ -1,6 +1,11 @@
 package com.ods14.patrones.controller;
 
 import com.ods14.patrones.model.*;
+import com.ods14.patrones.model.entidades.Biodiversidad;
+import com.ods14.patrones.model.entidades.Ecosistema;
+import com.ods14.patrones.model.entidades.Especie;
+import com.ods14.patrones.model.entidades.RegistroFacade;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,16 +20,6 @@ public class EcosistemaInfoController {
         return "ecosistema";
     }
 
-    @PostMapping("/ecosistemas")
-    public String guardarEcosistema(@ModelAttribute Ecosistema ecosistema, Model model) {
-        ProcedimientoInsertEcosistema proc = new ProcedimientoInsertEcosistema();
-        proc.ejecutar(ecosistema.getNombreEcosistema());
-        // Obtener el último id insertado
-        int idEcosistema = Ecosistema.obtenerUltimoId();
-        model.addAttribute("idEcosistema", idEcosistema);
-        return "redirect:/info/especies?idEcosistema=" + idEcosistema;
-    }
-
     @GetMapping("/especies")
     public String mostrarEspecie(@RequestParam int idEcosistema, Model model) {
         Especie especie = new Especie();
@@ -33,10 +28,32 @@ public class EcosistemaInfoController {
         return "especie";
     }
 
+    @GetMapping("/biodiversidad")
+    public String mostrarBiodiversidad(@RequestParam int idEcosistema, Model model) {
+        Biodiversidad biodiversidad = new Biodiversidad();
+        biodiversidad.setIdEcosistema(idEcosistema);
+        model.addAttribute("biodiversidad", biodiversidad);
+        return "biodiversidad";
+    }
+    
+    @GetMapping("/finalizado")
+    public String mostrarFinalizado() {
+        return "finalizado";
+    }
+
+    private final RegistroFacade facade = new RegistroFacade();
+
+    @PostMapping("/ecosistemas")
+    public String guardarEcosistema(@ModelAttribute Ecosistema ecosistema, Model model) {
+        facade.registrarEcosistema(ecosistema.getNombreEcosistema());
+        int idEcosistema = Ecosistema.obtenerUltimoId();
+        model.addAttribute("idEcosistema", idEcosistema);
+        return "redirect:/info/especies?idEcosistema=" + idEcosistema;
+    }
+
     @PostMapping("/especies")
     public String guardarEspecie(@ModelAttribute Especie especie, Model model) {
-        ProcedimientoInsertEspecie proc = new ProcedimientoInsertEspecie();
-        proc.ejecutar(
+        facade.registrarEspecie(
             especie.getNombreCientifico(),
             especie.getNombreComun(),
             especie.getEstadoConservacion(),
@@ -47,26 +64,12 @@ public class EcosistemaInfoController {
         return "redirect:/info/biodiversidad?idEcosistema=" + especie.getIdEcosistema();
     }
 
-    @GetMapping("/biodiversidad")
-    public String mostrarBiodiversidad(@RequestParam int idEcosistema, Model model) {
-        Biodiversidad biodiversidad = new Biodiversidad();
-        biodiversidad.setIdEcosistema(idEcosistema);
-        model.addAttribute("biodiversidad", biodiversidad);
-        return "biodiversidad";
-    }
-
     @PostMapping("/biodiversidad")
     public String guardarBiodiversidad(@ModelAttribute Biodiversidad biodiversidad) {
-        ProcedimientoInsertBiodiversidad proc = new ProcedimientoInsertBiodiversidad();
-        proc.ejecutar(
+        facade.registrarBiodiversidad(
             biodiversidad.getIdEcosistema(),
             biodiversidad.getDescripcion()
         );
         return "redirect:/info/finalizado";
-    }
-    
-    @GetMapping("/finalizado")
-    public String mostrarFinalizado() {
-        return "finalizado";
     }
 }

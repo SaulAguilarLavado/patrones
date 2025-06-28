@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import com.ods14.patrones.model.conexion.ConexionBD;
+
 public class Usuario {
     private int id;
     private String nombre;

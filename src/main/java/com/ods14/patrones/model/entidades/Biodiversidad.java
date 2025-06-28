@@ -1,4 +1,4 @@
-package com.ods14.patrones.model;
+package com.ods14.patrones.model.entidades;
 
 public class Biodiversidad {
     private int idBiodiversidad;

@@ -1,4 +1,4 @@
-package com.ods14.patrones.model;
+package com.ods14.patrones.model.procedimientos;
 
 public interface ProcedimientoPrototype extends Cloneable {
     ProcedimientoPrototype clonar();

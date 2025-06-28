@@ -1,8 +1,10 @@
-package com.ods14.patrones.model;
+package com.ods14.patrones.model.entidades;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import com.ods14.patrones.model.conexion.ConexionBD;
 
 public class Ecosistema {
     private int idEcosistema;
