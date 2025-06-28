@@ -1,4 +1,4 @@
-package com.ods14.patrones.model.entidades;
+package com.ods14.patrones.model;
 
 import com.ods14.patrones.model.procedimientos.ProcedimientoInsertBiodiversidad;
 import com.ods14.patrones.model.procedimientos.ProcedimientoInsertEcosistema;

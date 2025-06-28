@@ -1,4 +1,4 @@
-package com.ods14.patrones.model;
+package com.ods14.patrones.model.entidades;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

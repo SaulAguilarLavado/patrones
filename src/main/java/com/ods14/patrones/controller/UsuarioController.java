@@ -1,8 +1,7 @@
 package com.ods14.patrones.controller;
 
-import com.ods14.patrones.model.Usuario;
-import com.ods14.patrones.model.entidades.RegistroFacade;
-import com.ods14.patrones.model.procedimientos.ProcedimientoInsertUsuario;
+import com.ods14.patrones.model.RegistroFacade;
+import com.ods14.patrones.model.entidades.Usuario;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
