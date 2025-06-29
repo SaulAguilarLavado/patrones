@@ -1,28 +1,26 @@
 package com.ods14.patrones.model;
 
-import com.ods14.patrones.model.procedimientos.ProcedimientoInsertBiodiversidad;
-import com.ods14.patrones.model.procedimientos.ProcedimientoInsertEcosistema;
-import com.ods14.patrones.model.procedimientos.ProcedimientoInsertEspecie;
-import com.ods14.patrones.model.procedimientos.ProcedimientoInsertUsuario;
+import com.ods14.patrones.model.procedimientos.ProcedimientoFactory;
+import com.ods14.patrones.model.procedimientos.ProcedimientoPrototype;
 
 public class RegistroFacade {
     public void registrarUsuario(String usuario, String contrasena) {
-        ProcedimientoInsertUsuario proc = new ProcedimientoInsertUsuario();
+        ProcedimientoPrototype proc = ProcedimientoFactory.crear("usuario");
         proc.ejecutar(usuario, contrasena);
     }
 
     public void registrarEcosistema(String nombreEcosistema) {
-        ProcedimientoInsertEcosistema proc = new ProcedimientoInsertEcosistema();
+        ProcedimientoPrototype proc = ProcedimientoFactory.crear("ecosistema");
         proc.ejecutar(nombreEcosistema);
     }
 
     public void registrarEspecie(String nombreCientifico, String nombreComun, String estado, String descripcion, int idEcosistema) {
-        ProcedimientoInsertEspecie proc = new ProcedimientoInsertEspecie();
+        ProcedimientoPrototype proc = ProcedimientoFactory.crear("especie");
         proc.ejecutar(nombreCientifico, nombreComun, estado, descripcion, idEcosistema);
     }
 
     public void registrarBiodiversidad(int idEcosistema, String descripcion) {
-        ProcedimientoInsertBiodiversidad proc = new ProcedimientoInsertBiodiversidad();
+        ProcedimientoPrototype proc = ProcedimientoFactory.crear("biodiversidad");
         proc.ejecutar(idEcosistema, descripcion);
     }
 }
