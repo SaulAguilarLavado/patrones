@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas de Impacto</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <h2>Estadísticas de Impacto</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Actividades Realizadas</th>
+                <th>Participación Totales</th>
+                <th>Residuos Recolectados (kg)</th>
+                <th>Especies Monitoreadas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${estadisticas.actividadesRealizadas}"></td>
+                <td th:text="${estadisticas.participacionTotales}"></td>
+                <td th:text="${estadisticas.residuosRecolectados}"></td>
+                <td th:text="${estadisticas.especiesMonitoreadas}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <form action="/info/finalizado" method="get">
+        <button type="submit">Aceptar</button>
+    </form>
+</body>
+</html>

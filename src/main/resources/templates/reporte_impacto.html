@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Impacto</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <h2>Reporte de Impacto</h2>
+    <div class="contenedor-formulario">
+        <form action="/impacto/registrar" method="post" th:object="${reporte}">
+            <label>¿A qué actividad corresponde el reporte?</label>
+            <select th:field="*{idActividad}" required>
+                <option th:each="act : ${actividades}" th:value="${act.idActividad}" th:text="${act.nombreActividad}"></option>
+            </select><br>
+            <label>¿Cuál fue el impacto logrado?</label>
+            <textarea th:field="*{impactoLogrado}" required></textarea><br>
+            <label>¿Qué resultados cuantificables se obtuvieron?</label>
+            <textarea th:field="*{resultadosCuantificables}" required></textarea><br>
+            <label>Residuos recolectados (kg):</label>
+            <input type="number" th:field="*{residuosRecolectados}" min="0" value="0"><br>
+            <label>Especies monitoreadas:</label>
+            <input type="number" th:field="*{especiesMonitoreadas}" min="0" value="0"><br>
+            <label>Fecha del reporte:</label>
+            <input type="date" th:field="*{fechaReporte}" required><br>
+            <div class="form-buttons">
+                <button type="submit">Registrar Reporte</button>
+                <button type="reset">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

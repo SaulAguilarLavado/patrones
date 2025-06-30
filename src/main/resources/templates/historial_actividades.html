@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Actividades</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <h2>Historial de Actividades</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Actividad</th>
+                <th>Fecha</th>
+                <th>Responsable</th>
+                <th>Participante</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="actividad : ${historial}">
+                <td th:text="${actividad.nombreActividad}"></td>
+                <td th:text="${actividad.fecha}"></td>
+                <td>ONU</td>
+                <td th:text="${nombreUsuario}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <form action="/impacto/registrar" method="get">
+        <button type="submit">Siguiente: Reporte de Impacto</button>
+    </form>
+</body>
+</html>

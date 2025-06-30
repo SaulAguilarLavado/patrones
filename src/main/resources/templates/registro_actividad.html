@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Actividad</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <h2>Registrar actividad:</h2>
+    <div class="contenedor-formulario">
+        <form action="/actividad/registrar" method="post" th:object="${actividad}">
+            <label>¿Cuál es el nombre de la actividad?</label>
+            <input type="text" th:field="*{nombreActividad}" required><br>
+            <label>¿En qué fecha se realizará?</label>
+            <input type="date" th:field="*{fecha}" required><br>
+            <label>¿A qué hora inicia?</label>
+            <input type="time" th:field="*{horaInicio}" required><br>
+            <label>¿Dónde se realizará?</label>
+            <input type="text" th:field="*{lugar}" required><br>
+            <label>¿Quién es el responsable?</label>
+            <input type="text" th:field="*{responsable}" required><br>
+            <label>Describe brevemente la actividad</label>
+            <textarea th:field="*{descripcion}" required></textarea><br>
+            <div class="form-buttons">
+                <button type="submit">Registrar</button>
+                <button type="reset">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

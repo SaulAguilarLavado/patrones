@@ -55,6 +55,37 @@ INSERT INTO ecosistema (nombre_ecosistema) VALUES
 ('Pradera Marina'),
 ('Océano Profundo');
 
+-- Tabla de actividades
+CREATE TABLE IF NOT EXISTS actividad (
+    id_actividad INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_actividad VARCHAR(100) NOT NULL,
+    fecha DATE NOT NULL,
+    hora_inicio TIME NOT NULL,
+    lugar VARCHAR(100) NOT NULL,
+    responsable VARCHAR(100) NOT NULL,
+    descripcion TEXT
+);
+
+-- Tabla de participantes en actividades
+CREATE TABLE IF NOT EXISTS participante_actividad (
+    id_participante INT AUTO_INCREMENT PRIMARY KEY,
+    id_actividad INT,
+    nombre_participante VARCHAR(100) NOT NULL,
+    FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad)
+);
+
+-- Tabla de reportes de impacto
+CREATE TABLE IF NOT EXISTS reporte_impacto (
+    id_reporte INT AUTO_INCREMENT PRIMARY KEY,
+    id_actividad INT,
+    impacto_logrado TEXT,
+    resultados_cuantificables TEXT,
+    residuos_recolectados INT DEFAULT 0,
+    especies_monitoreadas INT DEFAULT 0,
+    fecha_reporte DATE,
+    FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad)
+);
+
 -- Procedimientos almacenados
 DELIMITER //
 
@@ -139,6 +170,71 @@ CREATE PROCEDURE sp_insert_ecosistema(
 BEGIN
     INSERT INTO ecosistema (nombre_ecosistema)
     VALUES (p_nombre_ecosistema);
+END //
+
+
+CREATE PROCEDURE sp_insert_actividad(
+    IN p_nombre_actividad VARCHAR(100),
+    IN p_fecha DATE,
+    IN p_hora_inicio TIME,
+    IN p_lugar VARCHAR(100),
+    IN p_responsable VARCHAR(100),
+    IN p_descripcion TEXT
+)
+BEGIN
+    INSERT INTO actividad (nombre_actividad, fecha, hora_inicio, lugar, responsable, descripcion)
+    VALUES (p_nombre_actividad, p_fecha, p_hora_inicio, p_lugar, p_responsable, p_descripcion);
+END //
+
+CREATE PROCEDURE sp_get_actividades()
+BEGIN
+    SELECT * FROM actividad;
+END //
+
+CREATE PROCEDURE sp_insert_participante_actividad(
+    IN p_id_actividad INT,
+    IN p_nombre_participante VARCHAR(100)
+)
+BEGIN
+    INSERT INTO participante_actividad (id_actividad, nombre_participante)
+    VALUES (p_id_actividad, p_nombre_participante);
+END //
+
+CREATE PROCEDURE sp_get_participantes_por_actividad(
+    IN p_id_actividad INT
+)
+BEGIN
+    SELECT * FROM participante_actividad WHERE id_actividad = p_id_actividad;
+END //
+
+-- Procedimientos para reporte de impacto
+CREATE PROCEDURE sp_insert_reporte_impacto(
+    IN p_id_actividad INT,
+    IN p_impacto_logrado TEXT,
+    IN p_resultados_cuantificables TEXT,
+    IN p_residuos_recolectados INT,
+    IN p_especies_monitoreadas INT
+)
+BEGIN
+    INSERT INTO reporte_impacto (id_actividad, impacto_logrado, resultados_cuantificables, residuos_recolectados, especies_monitoreadas)
+    VALUES (p_id_actividad, p_impacto_logrado, p_resultados_cuantificables, p_residuos_recolectados, p_especies_monitoreadas);
+END //
+
+CREATE PROCEDURE sp_get_reportes_impacto()
+BEGIN
+    SELECT r.*, a.nombre_actividad, a.fecha, a.responsable
+    FROM reporte_impacto r
+    JOIN actividad a ON r.id_actividad = a.id_actividad;
+END //
+
+-- Estadísticas de impacto
+CREATE PROCEDURE sp_estadisticas_impacto()
+BEGIN
+    SELECT
+        (SELECT COUNT(*) FROM actividad) AS actividades_realizadas,
+        (SELECT COUNT(*) FROM participante_actividad) AS participacion_totales,
+        (SELECT IFNULL(SUM(residuos_recolectados),0) FROM reporte_impacto) AS residuos_recolectados,
+        (SELECT IFNULL(SUM(especies_monitoreadas),0) FROM reporte_impacto) AS especies_monitoreadas;
 END //
 
 DELIMITER ;

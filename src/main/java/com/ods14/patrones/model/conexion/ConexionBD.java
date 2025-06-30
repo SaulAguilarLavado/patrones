@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 public class ConexionBD {
     private static ConexionBD instancia;
-    private Connection conexion;
     private final String URL = "jdbc:mysql://localhost:3306/ConservacionMarina";
     private final String USUARIO = "root";
     private final String CONTRASENA = "admin";
@@ -14,8 +13,7 @@ public class ConexionBD {
     private ConexionBD() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conexion = DriverManager.getConnection(URL, USUARIO, CONTRASENA);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -28,6 +26,11 @@ public class ConexionBD {
     }
 
     public Connection getConexion() {
-        return conexion;
+        try {
+            return DriverManager.getConnection(URL, USUARIO, CONTRASENA);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -70,6 +70,6 @@ public class EcosistemaInfoController {
             biodiversidad.getIdEcosistema(),
             biodiversidad.getDescripcion()
         );
-        return "redirect:/info/finalizado";
+        return "redirect:/actividad/registrar";
     }
 }
