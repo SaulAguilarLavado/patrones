@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,16 +28,44 @@ public class ActividadController {
     }
 
     @PostMapping("/registrar")
-    public String registrarActividad(@ModelAttribute Actividad actividad) {
+    public String registrarActividad(@ModelAttribute Actividad actividad, HttpSession session) {
+        // Depuración: imprime el responsable recibido
+        System.out.println("Responsable recibido: " + actividad.getResponsable());
+
+        // 1. Registrar la actividad
         facade.registrarActividad(
-            actividad.getNombreActividad(),
-            actividad.getFecha(),
-            actividad.getHoraInicio(),
-            actividad.getLugar(),
-            actividad.getResponsable(),
-            actividad.getDescripcion()
-        );
+                actividad.getNombreActividad(),
+                actividad.getFecha(),
+                actividad.getHoraInicio(),
+                actividad.getLugar(),
+                actividad.getResponsable(),
+                actividad.getDescripcion());
+
+        // 2. Obtener el usuario autenticado
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario != null) {
+            // 3. Obtener el último id de actividad registrada
+            int idUltimaActividad = obtenerUltimoIdActividad();
+            // 4. Registrar al usuario como participante
+            facade.registrarParticipanteActividad(idUltimaActividad, usuario.getNombre());
+        }
+
         return "redirect:/actividad/historial";
+    }
+
+    // Método auxiliar para obtener el último id de actividad registrada
+    private int obtenerUltimoIdActividad() {
+        int id = -1;
+        try (Connection conn = com.ods14.patrones.model.conexion.ConexionBD.getInstancia().getConexion();
+                PreparedStatement stmt = conn.prepareStatement("SELECT MAX(id_actividad) AS id FROM actividad");
+                ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 
     @GetMapping("/historial")
