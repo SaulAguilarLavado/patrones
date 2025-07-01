@@ -26,7 +26,8 @@ public class ProcedimientoInsertUsuario implements ProcedimientoPrototype {
             stmt.execute();
             System.out.println("Usuario insertado correctamente.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            // Lanza la excepción para que el controlador pueda capturarla
+            throw new RuntimeException(e);
         }
     }
 }
