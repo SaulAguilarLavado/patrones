@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,10 +22,14 @@ public class ReporteImpactoController {
     private final RegistroFacade facade = new RegistroFacade();
 
     @GetMapping("/registrar")
-    public String mostrarRegistroReporte(Model model) {
+    public String mostrarRegistroReporte(Model model, HttpSession session) {
         model.addAttribute("reporte", new ReporteImpacto());
-        // Pasa la lista de actividades al modelo
-        List<Actividad> actividades = facade.obtenerHistorialActividades();
+        // Obtener usuario autenticado
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        List<Actividad> actividades = new ArrayList<>();
+        if (usuario != null) {
+            actividades = facade.obtenerHistorialActividadesPorUsuario(usuario.getId());
+        }
         model.addAttribute("actividades", actividades);
         return "reporte_impacto";
     }
