@@ -66,6 +66,8 @@ CREATE TABLE IF NOT EXISTS actividad (
     descripcion TEXT
 );
 
+SELECT * FROM actividad ORDER BY id_actividad DESC LIMIT 5;
+
 -- Tabla de participantes en actividades
 CREATE TABLE IF NOT EXISTS participante_actividad (
     id_participante INT AUTO_INCREMENT PRIMARY KEY,
