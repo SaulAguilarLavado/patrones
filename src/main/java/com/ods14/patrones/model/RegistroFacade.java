@@ -76,6 +76,36 @@ public class RegistroFacade {
         observable.notificar("Reporte de impacto registrado para actividad: " + idActividad + " por usuario: " + idUsuario);
     }
 
+    // NUEVO: historial de actividades solo para el usuario autenticado
+    public List<Actividad> obtenerHistorialActividadesPorUsuario(int idUsuario) {
+        List<Actividad> actividades = new ArrayList<>();
+        String sql = "SELECT a.id_actividad, a.nombre_actividad, a.fecha, a.hora_inicio, a.lugar, a.responsable, a.descripcion " +
+                     "FROM actividad a " +
+                     "JOIN participante_actividad p ON a.id_actividad = p.id_actividad " +
+                     "WHERE p.nombre_participante = (SELECT nombre_usuario FROM usuario WHERE id_usuario = ?)";
+        try (Connection conn = ConexionBD.getInstancia().getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUsuario);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Actividad act = new Actividad();
+                    act.setIdActividad(rs.getInt("id_actividad"));
+                    act.setNombreActividad(rs.getString("nombre_actividad"));
+                    act.setFecha(rs.getString("fecha"));
+                    act.setHoraInicio(rs.getString("hora_inicio"));
+                    act.setLugar(rs.getString("lugar"));
+                    act.setResponsable(rs.getString("responsable"));
+                    act.setDescripcion(rs.getString("descripcion"));
+                    actividades.add(act);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return actividades;
+    }
+
+    // Método original (todas las actividades, no filtra por usuario)
     public List<Actividad> obtenerHistorialActividades() {
         List<Actividad> actividades = new ArrayList<>();
         String sql = "SELECT id_actividad, nombre_actividad, fecha, hora_inicio, lugar, responsable, descripcion FROM actividad";

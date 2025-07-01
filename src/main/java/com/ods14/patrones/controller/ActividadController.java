@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,14 +39,14 @@ public class ActividadController {
 
     @GetMapping("/historial")
     public String historialActividades(Model model, HttpSession session) {
-        List<Actividad> historial = facade.obtenerHistorialActividades();
-        model.addAttribute("historial", historial);
-
-        // Obtener usuario de la sesión y pasar su nombre al modelo
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String nombreUsuario = (usuario != null) ? usuario.getNombre() : "Invitado";
+        List<Actividad> historial = new ArrayList<>();
+        if (usuario != null) {
+            historial = facade.obtenerHistorialActividadesPorUsuario(usuario.getId());
+        }
+        model.addAttribute("historial", historial);
         model.addAttribute("nombreUsuario", nombreUsuario);
-
         return "historial_actividades";
     }
 }
