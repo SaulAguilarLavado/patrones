@@ -85,6 +85,9 @@ CREATE TABLE IF NOT EXISTS reporte_impacto (
     fecha_reporte DATE,
     FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad)
 );
+ALTER TABLE reporte_impacto ADD COLUMN id_usuario INT;
+ALTER TABLE reporte_impacto ADD FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario);
+DROP PROCEDURE IF EXISTS sp_insert_reporte_impacto;
 
 -- Procedimientos almacenados
 DELIMITER //
@@ -207,17 +210,21 @@ BEGIN
     SELECT * FROM participante_actividad WHERE id_actividad = p_id_actividad;
 END //
 
--- Procedimientos para reporte de impacto
+-- Procedimiento para insertar reporte de impacto (con fecha)
 CREATE PROCEDURE sp_insert_reporte_impacto(
     IN p_id_actividad INT,
     IN p_impacto_logrado TEXT,
     IN p_resultados_cuantificables TEXT,
     IN p_residuos_recolectados INT,
-    IN p_especies_monitoreadas INT
+    IN p_especies_monitoreadas INT,
+    IN p_id_usuario INT
 )
 BEGIN
-    INSERT INTO reporte_impacto (id_actividad, impacto_logrado, resultados_cuantificables, residuos_recolectados, especies_monitoreadas)
-    VALUES (p_id_actividad, p_impacto_logrado, p_resultados_cuantificables, p_residuos_recolectados, p_especies_monitoreadas);
+    INSERT INTO reporte_impacto (
+        id_actividad, impacto_logrado, resultados_cuantificables, residuos_recolectados, especies_monitoreadas, id_usuario
+    ) VALUES (
+        p_id_actividad, p_impacto_logrado, p_resultados_cuantificables, p_residuos_recolectados, p_especies_monitoreadas, p_id_usuario
+    );
 END //
 
 CREATE PROCEDURE sp_get_reportes_impacto()
