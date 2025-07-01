@@ -5,10 +5,16 @@
     <title>Contribución Finalizada</title>
     <link rel="stylesheet" href="/styles/style.css">
 </head>
-<body>
-    <h2>¡Gracias por tu contribución!</h2>
-    <p>Tu aporte a la conservación marina ha sido registrado.</p>
-    <a href="/info/ecosistemas">Volver a explorar ecosistemas</a>
-    <a href="/login">Cerrar sesión</a>
+<body class="finalizado">
+    <!-- Mensajes de estado -->
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <div class="finalizado-container">
+        <h2>¡Gracias por tu contribución!</h2>
+        <p>Tu aporte a la conservación marina ha sido registrado.</p>
+        <a href="/info/ecosistemas">Volver a explorar ecosistemas</a>
+        <a href="/login">Cerrar sesión</a>
+        <a href="/ayuda" class="ayuda-link">¿Necesitas ayuda?</a>
+    </div>
 </body>
 </html>

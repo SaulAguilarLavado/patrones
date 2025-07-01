@@ -6,27 +6,51 @@
     <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-    <h2>Historial de Actividades</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Actividad</th>
-                <th>Fecha</th>
-                <th>Responsable</th>
-                <th>Participante</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="actividad : ${historial}">
-                <td th:text="${actividad.nombreActividad}"></td>
-                <td th:text="${actividad.fecha}"></td>
-                <td>ONU</td>
-                <td th:text="${nombreUsuario}"></td>
-            </tr>
-        </tbody>
-    </table>
-    <form action="/impacto/registrar" method="get">
-        <button type="submit">Siguiente: Reporte de Impacto</button>
-    </form>
+    <!-- Mensajes de estado -->
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <div class="main-layout">
+        <!-- Panel lateral -->
+        <div class="sidebar">
+            <a href="/actividad/registrar">Registrar actividad</a>
+            <a class="active" href="/historial/actividades">Historial de actividades</a>
+            <a href="/impacto/registrar">Reporte de impacto</a>
+            <a href="/estadisticas/impacto">Estadísticas de impacto</a>
+        </div>
+        <!-- Contenido central -->
+        <div class="content">
+            <div class="numeros">
+                <div class="numero">Información Marina</div>
+                <div class="numero active">Seguimiento</div>
+                <div class="numero">Sensibilización y Recaudación</div>
+            </div>
+            <h2>Historial de Actividades</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Actividad</th>
+                        <th>Fecha</th>
+                        <th>Responsable</th>
+                        <th>Participante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="actividad : ${historial}">
+                        <td th:text="${actividad.nombreActividad}"></td>
+                        <td th:text="${actividad.fecha}"></td>
+                        <td>ONU</td>
+                        <td th:text="${nombreUsuario}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <form action="/impacto/registrar" method="get">
+                <button type="submit">Siguiente: Reporte de Impacto</button>
+                <button type="button" onclick="history.back()">Volver</button>
+            </form>
+            <p><a href="/ayuda">¿Necesitas ayuda?</a></p>
+        </div>
+    </div>
 </body>
 </html>

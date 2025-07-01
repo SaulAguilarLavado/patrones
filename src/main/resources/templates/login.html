@@ -6,22 +6,28 @@
     <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
+    <!-- Mensajes de estado -->
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
     <!-- Barra de números -->
     <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
-    <h4>(ODS 14: Vida Submarina)</h4>
     <div class="contenedor-formulario">
         <h3>LOGIN</h3>
         <form action="/login" method="post">
             <label>Usuario:</label>
-            <input type="text" name="usuario" required><br><br>
+            <input type="text" name="usuario" required placeholder="Ingresa tu usuario"><br>
+            <small>Tu nombre de usuario registrado.</small><br><br>
             <label>Contraseña:</label>
-            <input type="password" name="contrasena" required><br><br>
+            <input type="password" name="contrasena" required placeholder="Ingresa tu contraseña"><br>
+            <small>No compartas tu contraseña con nadie.</small><br><br>
             <div class="form-buttons">
                 <button type="submit">Aceptar</button>
                 <button type="reset">Cancelar</button>
+                <button type="button" onclick="history.back()">Volver</button>
             </div>
         </form>
         <p>¿No tienes cuenta? <a href="/signup">Regístrate aquí</a></p>
+        <p><a href="/ayuda">¿Necesitas ayuda?</a></p>
     </div>
 </body>
 </html>

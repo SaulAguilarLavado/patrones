@@ -1,51 +1,58 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registrar Especie | ODS 14</title>
     <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-    <!-- Barra de módulos -->
-    <div class="modulos">
-        <div class="modulo">M1</div>
-        <div class="modulo">M2</div>
-        <div class="modulo">M3</div>
-    </div>
-    <!-- Barra de números -->
-    <div class="numeros">
-        <div class="numero">1</div>
-        <div class="numero active">2</div>
-        <div class="numero">3</div>
-    </div>
+    <!-- Mensajes de estado -->
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
     <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
-    <h4>(ODS 14: Vida Submarina)</h4>
-    <div class="contenedor-formulario">
-        <h3>ESPECIE</h3>
-        <form action="/info/especies" method="post">
-            <input type="hidden" name="idEcosistema" th:value="${especie.idEcosistema}">
-            <!-- Resto de tus campos -->
-            <label>¿Cuál es el nombre científico de la especie?</label><br>
-            <input type="text" name="nombreCientifico" required><br>
-            <label>¿Cuál es el nombre común de la especie?</label><br>
-            <input type="text" name="nombreComun"><br>
-            <label>¿Cuál es su estado de conservación?</label><br>
-            <select name="estadoConservacion" required>
-                <option value="Preocupación Menor">Preocupación Menor</option>
-                <option value="Vulnerable">Vulnerable</option>
-                <option value="En Peligro">En Peligro</option>
-                <option value="En Peligro Crítico">En Peligro Crítico</option>
-            </select><br>
-            <label>¿Puedes dar una breve descripción de la especie?</label><br>
-            <textarea name="descripcion"></textarea><br>
-            <div class="form-buttons">
-                <button type="submit">Aceptar</button>
-                <button type="reset">Cancelar</button>
-                <button type="button" class="btn-retroceder" onclick="history.back()">Retroceder</button>
+    <div class="main-layout">
+        <!-- Panel lateral -->
+        <div class="sidebar">
+            <a href="/info/ecosistemas">Registrar ecosistema</a>
+            <a class="active" href="/info/especies">Registrar especie</a>
+            <a href="/info/biodiversidad">Registrar biodiversidad</a>
+        </div>
+        <!-- Contenido central -->
+        <div class="content">
+            <!-- Barra de números/pasos -->
+            <div class="modulos">
+                <div class="modulo active">Información Marina</div>
+                <div class="modulo">Seguimiento</div>
+                <div class="modulo">Sensibilización y Recaudación</div>
             </div>
-        </form>
+            <div class="contenedor-formulario">
+                <h3>ESPECIE</h3>
+                <form action="/info/especies" method="post">
+                    <input type="hidden" name="idEcosistema" th:value="${especie.idEcosistema}">
+                    <label>¿Cuál es el nombre científico de la especie?</label>
+                    <input type="text" name="nombreCientifico" required placeholder="Ej: Acropora palmata">
+                    <small>Ejemplo: Acropora palmata, Chelonia mydas, etc.</small>
+                    <label>¿Cuál es el nombre común de la especie?</label>
+                    <input type="text" name="nombreComun" placeholder="Ej: Coral cuerno de alce">
+                    <label>¿Cuál es su estado de conservación?</label>
+                    <select name="estadoConservacion" required>
+                        <option value="Preocupación Menor">Preocupación Menor</option>
+                        <option value="Vulnerable">Vulnerable</option>
+                        <option value="En Peligro">En Peligro</option>
+                        <option value="En Peligro Crítico">En Peligro Crítico</option>
+                    </select>
+                    <label>¿Puedes dar una breve descripción de la especie?</label>
+                    <textarea name="descripcion" placeholder="Describe la especie..."></textarea>
+                    <div class="form-buttons">
+                        <button type="submit">Aceptar</button>
+                        <button type="reset">Cancelar</button>
+                        <button type="button" class="btn-retroceder" onclick="history.back()">Retroceder</button>
+                    </div>
+                </form>
+                <p><a href="/ayuda">¿Necesitas ayuda?</a></p>
+            </div>
+        </div>
     </div>
-    
 </body>
 </html>

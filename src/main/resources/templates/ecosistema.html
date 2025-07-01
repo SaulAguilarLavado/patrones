@@ -1,38 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registrar Ecosistema | ODS 14</title>
     <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-    <!-- Barra de módulos -->
-    <div class="modulos">
-        <div class="modulo">M1</div>
-        <div class="modulo">M2</div>
-        <div class="modulo">M3</div>
-    </div>
-    <!-- Barra de números -->
-    <div class="numeros">
-        <div class="numero active">1</div>
-        <div class="numero">2</div>
-        <div class="numero">3</div>
-    </div>
     <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
-    <h4>(ODS 14: Vida Submarina)</h4>
-    <div class="contenedor-formulario">
-        <h3>ECOSISTEMA</h3>
-        <form action="/info/ecosistemas" method="post">
-            <label>¿Cuál es el nombre del ecosistema?</label> <br>
-            <input type="text" name="nombreEcosistema" required><br>
-            <div class="form-buttons">
-                <button type="submit">Aceptar</button>
-                <button type="reset">Cancelar</button>
-                <button type="button" class="btn-retroceder" onclick="history.back()">Retroceder</button>
+    <!-- Mensajes de estado -->
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <div class="main-layout">
+        <!-- Panel lateral -->
+        <div class="sidebar">
+            <a class="active" href="/info/ecosistemas">Registrar ecosistema</a>
+            <a href="/info/especies">Registrar especie</a>
+            <a href="/info/biodiversidad">Registrar biodiversidad</a>
+        </div>
+        <!-- Contenido central -->
+        <div class="content">
+            <!-- Barra de números/pasos -->
+            <div class="numeros">
+                <div class="numero active">Información Marina</div>
+                <div class="numero">Seguimiento</div>
+                <div class="numero">Sensibilización y Recaudación</div>
             </div>
-        </form>
+            <div class="contenedor-formulario">
+                <h3>ECOSISTEMA</h3>
+                <form action="/info/ecosistemas" method="post">
+                    <label>¿Cuál es el nombre del ecosistema?</label>
+                    <input type="text" name="nombreEcosistema" required placeholder="Ej: Arrecife de Coral"><br>
+                    <small>Ejemplo: Arrecife de Coral, Mar Abierto, Pradera Marina, etc.</small><br><br>
+                    <div class="form-buttons">
+                        <button type="submit">Aceptar</button>
+                        <button type="reset">Cancelar</button>
+                        <button type="button" class="btn-retroceder" onclick="history.back()">Retroceder</button>
+                    </div>
+                </form>
+                <p><a href="/ayuda">¿Necesitas ayuda?</a></p>
+            </div>
+        </div>
     </div>
-    
 </body>
 </html>

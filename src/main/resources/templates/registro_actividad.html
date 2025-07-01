@@ -4,28 +4,53 @@
     <meta charset="UTF-8">
     <title>Registrar Actividad</title>
     <link rel="stylesheet" href="/styles/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h2>Registrar actividad:</h2>
-    <div class="contenedor-formulario">
-        <form action="/actividad/registrar" method="post" th:object="${actividad}">
-            <label>¿Cuál es el nombre de la actividad?</label>
-            <input type="text" th:field="*{nombreActividad}" required><br>
-            <label>¿En qué fecha se realizará?</label>
-            <input type="date" th:field="*{fecha}" required><br>
-            <label>¿A qué hora inicia?</label>
-            <input type="time" th:field="*{horaInicio}" required><br>
-            <label>¿Dónde se realizará?</label>
-            <input type="text" th:field="*{lugar}" required><br>
-            <label>¿Quién es el responsable?</label>
-            <input type="text" th:field="*{responsable}" required><br>
-            <label>Describe brevemente la actividad</label>
-            <textarea th:field="*{descripcion}" required></textarea><br>
-            <div class="form-buttons">
-                <button type="submit">Registrar</button>
-                <button type="reset">Cancelar</button>
+    <!-- Mensajes de estado -->
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <div class="main-layout">
+        <!-- Panel lateral -->
+        <div class="sidebar">
+            <a class="active" href="/actividad/registrar">Registrar actividad</a>
+            <a href="/historial/actividades">Historial de actividades</a>
+            <a href="/impacto/registrar">Reporte de impacto</a>
+            <a href="/estadisticas/impacto">Estadísticas de impacto</a>
+        </div>
+        <!-- Contenido central -->
+        <div class="content">
+            <div class="numeros">
+                <div class="numero">Información Marina</div>
+                <div class="numero active">Seguimiento</div>
+                <div class="numero">Sensibilización y Recaudación</div>
             </div>
-        </form>
+            <h2>Registrar actividad:</h2>
+            <div class="contenedor-formulario">
+                <form action="/actividad/registrar" method="post" th:object="${actividad}">
+                    <label>¿Cuál es el nombre de la actividad?</label>
+                    <input type="text" th:field="*{nombreActividad}" required placeholder="Ej: Limpieza de playa">
+                    <small>Ejemplo: Limpieza de playa, monitoreo de corales, etc.</small>
+                    <label>¿En qué fecha se realizará?</label>
+                    <input type="date" th:field="*{fecha}" required>
+                    <label>¿A qué hora inicia?</label>
+                    <input type="time" th:field="*{horaInicio}" required>
+                    <label>¿Dónde se realizará?</label>
+                    <input type="text" th:field="*{lugar}" required placeholder="Ej: Playa Miraflores">
+                    <label>¿Quién es el responsable?</label>
+                    <input type="text" th:field="*{responsable}" required placeholder="Ej: Juan Pérez">
+                    <label>Describe brevemente la actividad</label>
+                    <textarea th:field="*{descripcion}" required placeholder="Describe la actividad..."></textarea>
+                    <div class="form-buttons">
+                        <button type="submit">Registrar</button>
+                        <button type="reset">Cancelar</button>
+                        <button type="button" class="btn-retroceder" onclick="history.back()">Retroceder</button>
+                    </div>
+                </form>
+                <p><a href="/ayuda">¿Necesitas ayuda?</a></p>
+            </div>
+        </div>
     </div>
 </body>
 </html>

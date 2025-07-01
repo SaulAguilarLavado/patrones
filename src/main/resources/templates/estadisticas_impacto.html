@@ -6,27 +6,50 @@
     <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-    <h2>Estadísticas de Impacto</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Actividades Realizadas</th>
-                <th>Participación Totales</th>
-                <th>Residuos Recolectados (kg)</th>
-                <th>Especies Monitoreadas</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td th:text="${estadisticas.actividadesRealizadas}"></td>
-                <td th:text="${estadisticas.participacionTotales}"></td>
-                <td th:text="${estadisticas.residuosRecolectados}"></td>
-                <td th:text="${estadisticas.especiesMonitoreadas}"></td>
-            </tr>
-        </tbody>
-    </table>
-    <form action="/info/finalizado" method="get">
-        <button type="submit">Aceptar</button>
-    </form>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <!-- Mensajes de estado -->
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <div class="main-layout">
+        <!-- Panel lateral -->
+        <div class="sidebar">
+            <a href="/actividad/registrar">Registrar actividad</a>
+            <a href="/historial/actividades">Historial de actividades</a>
+            <a href="/impacto/registrar">Reporte de impacto</a>
+            <a class="active" href="/estadisticas/impacto">Estadísticas de impacto</a>
+        </div>
+        <!-- Contenido central -->
+        <div class="content">
+            <div class="numeros">
+                <div class="numero">Información Marina</div>
+                <div class="numero active">Seguimiento</div>
+                <div class="numero">Sensibilización y Recaudación</div>
+            </div>
+            <h2>Estadísticas de Impacto</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Actividades Realizadas</th>
+                        <th>Participación Totales</th>
+                        <th>Residuos Recolectados (kg)</th>
+                        <th>Especies Monitoreadas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${estadisticas.actividadesRealizadas}"></td>
+                        <td th:text="${estadisticas.participacionTotales}"></td>
+                        <td th:text="${estadisticas.residuosRecolectados}"></td>
+                        <td th:text="${estadisticas.especiesMonitoreadas}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <form action="/info/finalizado" method="get" class="form-buttons">
+                <button type="submit">Aceptar</button>
+                <button type="button" onclick="history.back()">Volver</button>
+            </form>
+            <p><a href="/ayuda">¿Necesitas ayuda?</a></p>
+        </div>
+    </div>
 </body>
 </html>

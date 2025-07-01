@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Registro | ODS 14</title>
     <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
+    <!-- Mensajes de estado -->
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
     <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
-    <h4>(ODS 14: Vida Submarina)</h4>
     
     <div class="contenedor-formulario">
         <h3>REGISTRO</h3>
         <form action="/signup" method="post">
             <label>Usuario:</label>
-            <input type="text" name="usuario" required><br><br>
+            <input type="text" name="usuario" required placeholder="Elige un nombre de usuario"><br>
+            <small>Debe ser único y fácil de recordar.</small><br><br>
             <label>Contraseña:</label>
-            <input type="password" name="contrasena" required><br><br>
+            <input type="password" name="contrasena" required placeholder="Crea una contraseña"><br>
+            <small>Debe tener al menos 6 caracteres.</small><br><br>
             <div class="form-buttons">
                 <button type="submit">Aceptar</button>
                 <button type="reset">Cancelar</button>
+                <button type="button" onclick="history.back()">Volver</button>
             </div>
         </form>
         <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a></p>
+        <p><a href="/ayuda">¿Necesitas ayuda?</a></p>
     </div>
 </body>
 </html>

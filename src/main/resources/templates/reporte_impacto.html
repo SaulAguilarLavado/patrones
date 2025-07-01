@@ -6,28 +6,53 @@
     <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-    <h2>Reporte de Impacto</h2>
-    <div class="contenedor-formulario">
-        <form action="/impacto/registrar" method="post" th:object="${reporte}">
-            <label>¿A qué actividad corresponde el reporte?</label>
-            <select th:field="*{idActividad}" required>
-                <option th:each="act : ${actividades}" th:value="${act.idActividad}" th:text="${act.nombreActividad}"></option>
-            </select><br>
-            <label>¿Cuál fue el impacto logrado?</label>
-            <textarea th:field="*{impactoLogrado}" required></textarea><br>
-            <label>¿Qué resultados cuantificables se obtuvieron?</label>
-            <textarea th:field="*{resultadosCuantificables}" required></textarea><br>
-            <label>Residuos recolectados (kg):</label>
-            <input type="number" th:field="*{residuosRecolectados}" min="0" value="0"><br>
-            <label>Especies monitoreadas:</label>
-            <input type="number" th:field="*{especiesMonitoreadas}" min="0" value="0"><br>
-            <label>Fecha del reporte:</label>
-            <input type="date" th:field="*{fechaReporte}" required><br>
-            <div class="form-buttons">
-                <button type="submit">Registrar Reporte</button>
-                <button type="reset">Cancelar</button>
+    <!-- Mensajes de estado -->
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <div class="main-layout">
+        <!-- Panel lateral -->
+        <div class="sidebar">
+            <a href="/actividad/registrar">Registrar actividad</a>
+            <a href="/historial/actividades">Historial de actividades</a>
+            <a class="active" href="/impacto/registrar">Reporte de impacto</a>
+            <a href="/estadisticas/impacto">Estadísticas de impacto</a>
+        </div>
+        <!-- Contenido central -->
+        <div class="content">
+            <div class="numeros">
+                <div class="numero">Información Marina</div>
+                <div class="numero active">Seguimiento</div>
+                <div class="numero">Sensibilización y Recaudación</div>
             </div>
-        </form>
+            <h2>Reporte de Impacto</h2>
+            <div class="contenedor-formulario">
+                <form action="/impacto/registrar" method="post" th:object="${reporte}">
+                    <label>¿A qué actividad corresponde el reporte?</label>
+                    <select th:field="*{idActividad}" required>
+                        <option th:each="act : ${actividades}" th:value="${act.idActividad}" th:text="${act.nombreActividad}"></option>
+                    </select>
+                    <label>¿Cuál fue el impacto logrado?</label>
+                    <textarea th:field="*{impactoLogrado}" required placeholder="Describe el impacto..."></textarea>
+                    <label>¿Qué resultados cuantificables se obtuvieron?</label>
+                    <textarea th:field="*{resultadosCuantificables}" required placeholder="Ejemplo: 10 kg de residuos, 5 especies monitoreadas"></textarea>
+                    <label>Residuos recolectados (kg):</label>
+                    <input type="number" th:field="*{residuosRecolectados}" min="0" value="0" required placeholder="Ej: 5">
+                    <small>Ingresa solo números positivos.</small>
+                    <label>Especies monitoreadas:</label>
+                    <input type="number" th:field="*{especiesMonitoreadas}" min="0" value="0" required placeholder="Ej: 3">
+                    <small>Ingresa solo números positivos.</small>
+                    <label>Fecha del reporte:</label>
+                    <input type="date" th:field="*{fechaReporte}" required>
+                    <div class="form-buttons">
+                        <button type="submit">Registrar Reporte</button>
+                        <button type="reset">Cancelar</button>
+                        <button type="button" onclick="history.back()">Volver</button>
+                    </div>
+                </form>
+                <p><a href="/ayuda">¿Necesitas ayuda?</a></p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
