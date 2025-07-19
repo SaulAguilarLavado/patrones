@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Campaña | ODS 14</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <div class="main-layout">
+        <div class="sidebar">
+            <a class="active" href="/sensibilizacion/campana">Crear Campaña</a>
+            <a href="/sensibilizacion/donacion">Gestionar Donaciones</a>
+            <a href="/sensibilizacion/evento">Recolección de Fondos</a>
+            <a href="/sensibilizacion/estadisticas">Estadísticas</a>
+        </div>
+        <div class="content">
+            <div class="numeros">
+                <div class="numero">Información Marina</div>
+                <div class="numero">Seguimiento</div>
+                <div class="numero active">Sensibilización y Recaudación</div>
+            </div>
+            <h3>CREAR CAMPAÑA</h3>
+            <div class="contenedor-formulario">
+                <form action="/sensibilizacion/campana" method="post" th:object="${campana}">
+                    <label>¿Cuál es el nombre de la campaña?</label>
+                    <input type="text" th:field="*{nombreCampana}" required placeholder="Ej: Salvemos los Océanos 2024">
+                    
+                    <label>¿Cuál es el objetivo principal?</label>
+                    <textarea th:field="*{objetivoPrincipal}" required placeholder="Describe el objetivo principal..."></textarea>
+                    
+                    <label>¿A qué público está dirigida?</label>
+                    <input type="text" th:field="*{publicoObjetivo}" required placeholder="Ej: Jóvenes de 18-35 años">
+                    
+                    <label>¿Cuál es el mensaje clave?</label>
+                    <textarea th:field="*{mensajeClave}" required placeholder="El mensaje principal de la campaña..."></textarea>
+                    
+                    <label>¿Cuánto tiempo durará la campaña? (días)</label>
+                    <input type="number" th:field="*{duracionDias}" min="1" required placeholder="Ej: 90">
+                    
+                    <label>¿Qué medios utilizarás?</label>
+                    <textarea th:field="*{mediosUtilizados}" required placeholder="Ej: Redes sociales, conferencias, eventos..."></textarea>
+                    
+                    <div class="form-buttons">
+                        <button type="submit">Crear Campaña</button>
+                        <button type="reset">Cancelar</button>
+                        <button type="button" onclick="history.back()">Volver</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestionar Donaciones | ODS 14</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <div class="main-layout">
+        <div class="sidebar">
+            <a href="/sensibilizacion/campana">Crear Campaña</a>
+            <a class="active" href="/sensibilizacion/donacion">Gestionar Donaciones</a>
+            <a href="/sensibilizacion/evento">Recolección de Fondos</a>
+            <a href="/sensibilizacion/estadisticas">Estadísticas</a>
+        </div>
+        <div class="content">
+            <div class="numeros">
+                <div class="numero">Información Marina</div>
+                <div class="numero">Seguimiento</div>
+                <div class="numero active">Sensibilización y Recaudación</div>
+            </div>
+            <h3>GESTIONAR DONACIONES</h3>
+            <div class="contenedor-formulario">
+                <form action="/sensibilizacion/donacion" method="post" th:object="${donacion}">
+                    <label>¿Cuál es el nombre del donante?</label>
+                    <input type="text" th:field="*{nombreDonante}" required placeholder="Nombre del donante">
+                    
+                    <label>¿Cuál es el monto de la donación?</label>
+                    <input type="number" step="0.01" min="0.01" th:field="*{montoDonacion}" required placeholder="Ej: 100.00">
+                    
+                    <label>¿Es una donación única o recurrente?</label>
+                    <select th:field="*{tipoDonacion}" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="unica">Única</option>
+                        <option value="recurrente">Recurrente</option>
+                    </select>
+                    
+                    <label>¿Para qué proyecto específico es la donación?</label>
+                    <input type="text" th:field="*{proyectoEspecifico}" placeholder="Proyecto específico (opcional)">
+                    
+                    <label>¿Cómo desea que sea reconocida su contribución?</label>
+                    <select th:field="*{reconocimiento}" required>
+                        <option value="con_nombre">Con nombre</option>
+                        <option value="anonimo">Anónimo</option>
+                        <option value="publico">Público</option>
+                    </select>
+                    
+                    <label>Método de pago:</label>
+                    <select th:field="*{metodoPago}" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="transferencia">Transferencia</option>
+                    </select>
+                    
+                    <label>Campaña asociada:</label>
+                    <select th:field="*{idCampana}" required>
+                        <option value="">Seleccionar campaña...</option>
+                        <option th:each="campana : ${campanas}" th:value="${campana.idCampana}" th:text="${campana.nombreCampana}"></option>
+                    </select>
+                    
+                    <div class="form-buttons">
+                        <button type="submit">Registrar Donación</button>
+                        <button type="reset">Cancelar</button>
+                        <button type="button" onclick="history.back()">Volver</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recolección de Fondos | ODS 14</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <div class="main-layout">
+        <div class="sidebar">
+            <a href="/sensibilizacion/campana">Crear Campaña</a>
+            <a href="/sensibilizacion/donacion">Gestionar Donaciones</a>
+            <a class="active" href="/sensibilizacion/evento">Recolección de Fondos</a>
+            <a href="/sensibilizacion/estadisticas">Estadísticas</a>
+        </div>
+        <div class="content">
+            <div class="numeros">
+                <div class="numero">Información Marina</div>
+                <div class="numero">Seguimiento</div>
+                <div class="numero active">Sensibilización y Recaudación</div>
+            </div>
+            <h3>RECOLECCIÓN DE FONDOS</h3>
+            <div class="contenedor-formulario">
+                <form action="/sensibilizacion/evento" method="post" th:object="${evento}">
+                    <label>¿Cuál es el nombre del evento?</label>
+                    <input type="text" th:field="*{nombreEvento}" required placeholder="Ej: Concierto Benéfico por los Océanos">
+                    
+                    <label>¿Cuál es la meta de recaudación?</label>
+                    <input type="number" step="0.01" min="0.01" th:field="*{metaRecaudacion}" required placeholder="Ej: 5000.00">
+                    
+                    <label>¿Cuándo se realizará el evento?</label>
+                    <input type="date" th:field="*{fechaEvento}" required>
+                    
+                    <label>¿Dónde se llevará a cabo?</label>
+                    <input type="text" th:field="*{lugarEvento}" required placeholder="Ubicación del evento">
+                    
+                    <label>¿Qué tipo de evento es?</label>
+                    <select th:field="*{tipoEvento}" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="conferencia">Conferencia</option>
+                        <option value="concierto">Concierto</option>
+                        <option value="subasta">Subasta</option>
+                        <option value="maratón">Maratón</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                    
+                    <label>¿Cuáles son los gastos estimados?</label>
+                    <input type="number" step="0.01" min="0" th:field="*{gastosEstimados}" placeholder="Ej: 1000.00">
+                    
+                    <label>Campaña asociada:</label>
+                    <select th:field="*{idCampana}" required>
+                        <option value="">Seleccionar campaña...</option>
+                        <option th:each="campana : ${campanas}" th:value="${campana.idCampana}" th:text="${campana.nombreCampana}"></option>
+                    </select>
+                    
+                    <div class="form-buttons">
+                        <button type="submit">Crear Evento</button>
+                        <button type="reset">Cancelar</button>
+                        <button type="button" onclick="history.back()">Volver</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

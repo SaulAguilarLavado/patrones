@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas de Donaciones | ODS 14</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <h2>Plataforma de Protección y Conservación de Ecosistemas</h2>
+    <div class="main-layout">
+        <div class="sidebar">
+            <a href="/sensibilizacion/campana">Crear Campaña</a>
+            <a href="/sensibilizacion/donacion">Gestionar Donaciones</a>
+            <a href="/sensibilizacion/evento">Recolección de Fondos</a>
+            <a class="active" href="/sensibilizacion/estadisticas">Estadísticas</a>
+        </div>
+        <div class="content">
+            <div class="numeros">
+                <div class="numero">Información Marina</div>
+                <div class="numero">Seguimiento</div>
+                <div class="numero active">Sensibilización y Recaudación</div>
+            </div>
+            <h3>ESTADÍSTICAS DE DONACIONES</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Total Recaudado</th>
+                        <th>Número de Donantes</th>
+                        <th>Campañas Activas</th>
+                        <th>Eventos Realizados</th>
+                        <th>Proyectos Financiados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>$<span th:text="${estadisticas.totalRecaudado}">0.00</span></td>
+                        <td th:text="${estadisticas.numeroDonantes}">0</td>
+                        <td th:text="${estadisticas.campanasActivas}">0</td>
+                        <td th:text="${estadisticas.eventosRealizados}">0</td>
+                        <td th:text="${estadisticas.proyectosFinanciados}">0</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-buttons">
+                <button onclick="window.location.href='/info/finalizado'">Finalizar</button>
+                <button onclick="history.back()">Volver</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConexionBD {
     private static ConexionBD instancia;
-    private final String URL = "jdbc:mysql://localhost:3306/ConservacionMarina";
+    private final String URL = "jdbc:mysql://localhost:3306/patrones";
     private final String USUARIO = "root";
     private final String CONTRASENA = "admin";
 

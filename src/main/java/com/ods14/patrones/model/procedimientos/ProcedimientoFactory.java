@@ -17,6 +17,13 @@ public class ProcedimientoFactory {
                 return new ProcedimientoInsertParticipanteActividad();
             case "reporte_impacto":
                 return new ProcedimientoInsertReporteImpacto();
+            // NUEVOS PROCEDIMIENTOS
+            case "campana":
+                return new ProcedimientoInsertCampana();
+            case "donacion":
+                return new ProcedimientoInsertDonacion();
+            case "evento_recaudacion":
+                return new ProcedimientoInsertEventoRecaudacion();
             default:
                 throw new IllegalArgumentException("Tipo de procedimiento no soportado: " + tipo);
         }

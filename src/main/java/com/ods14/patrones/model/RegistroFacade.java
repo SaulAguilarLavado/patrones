@@ -6,9 +6,12 @@ import com.ods14.patrones.model.procedimientos.ProcedimientoProxy;
 import com.ods14.patrones.observer.RegistroObservable;
 import com.ods14.patrones.observer.LoggerObserver;
 import com.ods14.patrones.model.entidades.Actividad;
+import com.ods14.patrones.model.entidades.Campana;
 import com.ods14.patrones.model.conexion.ConexionBD;
 import com.ods14.patrones.model.dto.EstadisticasImpacto;
+import com.ods14.patrones.model.dto.EstadisticasDonaciones;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +70,6 @@ public class RegistroFacade {
         observable.notificar("Participante registrado en actividad: " + idActividad);
     }
     
-    // Cambiado: ahora incluye idUsuario
     public void registrarReporteImpacto(int idActividad, String impactoLogrado, String resultadosCuantificables, int residuosRecolectados, int especiesMonitoreadas, int idUsuario) {
         ProcedimientoPrototype proc = new ProcedimientoProxy(
             ProcedimientoFactory.crear("reporte_impacto")
@@ -76,7 +78,93 @@ public class RegistroFacade {
         observable.notificar("Reporte de impacto registrado para actividad: " + idActividad + " por usuario: " + idUsuario);
     }
 
-    // NUEVO: historial de actividades solo para el usuario autenticado
+    // ===== NUEVOS MÉTODOS PARA SENSIBILIZACIÓN Y RECAUDACIÓN =====
+    
+    public void registrarCampana(String nombreCampana, String objetivoPrincipal, String publicoObjetivo, String mensajeClave, int duracionDias, String mediosUtilizados, int idUsuarioCreador) {
+        ProcedimientoPrototype proc = new ProcedimientoProxy(
+            ProcedimientoFactory.crear("campana")
+        );
+        proc.ejecutar(nombreCampana, objetivoPrincipal, publicoObjetivo, mensajeClave, duracionDias, mediosUtilizados, idUsuarioCreador);
+        observable.notificar("Campaña registrada: " + nombreCampana);
+    }
+    
+    public void registrarDonacion(String nombreDonante, BigDecimal montoDonacion, String tipoDonacion, String proyectoEspecifico, String reconocimiento, String metodoPago, int idUsuario, int idCampana) {
+        ProcedimientoPrototype proc = new ProcedimientoProxy(
+            ProcedimientoFactory.crear("donacion")
+        );
+        proc.ejecutar(nombreDonante, montoDonacion, tipoDonacion, proyectoEspecifico, reconocimiento, metodoPago, idUsuario, idCampana);
+        observable.notificar("Donación registrada de: " + nombreDonante + " por $" + montoDonacion);
+    }
+    
+    public void registrarEventoRecaudacion(String nombreEvento, BigDecimal metaRecaudacion, String fechaEvento, String lugarEvento, String tipoEvento, BigDecimal gastosEstimados, int idUsuarioOrganizador, int idCampana) {
+        ProcedimientoPrototype proc = new ProcedimientoProxy(
+            ProcedimientoFactory.crear("evento_recaudacion")
+        );
+        proc.ejecutar(nombreEvento, metaRecaudacion, fechaEvento, lugarEvento, tipoEvento, gastosEstimados, idUsuarioOrganizador, idCampana);
+        observable.notificar("Evento de recaudación registrado: " + nombreEvento);
+    }
+
+    // Obtener campañas activas
+    public List<Campana> obtenerCampanasActivas() {
+        List<Campana> campanas = new ArrayList<>();
+        String sql = "SELECT * FROM campana WHERE estado = 'activa' ORDER BY fecha_creacion DESC";
+        try (Connection conn = ConexionBD.getInstancia().getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Campana campana = new Campana();
+                campana.setIdCampana(rs.getInt("id_campana"));
+                campana.setNombreCampana(rs.getString("nombre_campana"));
+                campana.setObjetivoPrincipal(rs.getString("objetivo_principal"));
+                campana.setPublicoObjetivo(rs.getString("publico_objetivo"));
+                campana.setMensajeClave(rs.getString("mensaje_clave"));
+                campana.setDuracionDias(rs.getInt("duracion_dias"));
+                campana.setMediosUtilizados(rs.getString("medios_utilizados"));
+                campana.setEstado(rs.getString("estado"));
+                campanas.add(campana);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return campanas;
+    }
+
+    // Estadísticas de donaciones
+    public EstadisticasDonaciones obtenerEstadisticasDonaciones() {
+        EstadisticasDonaciones stats = new EstadisticasDonaciones();
+        try (Connection conn = ConexionBD.getInstancia().getConexion()) {
+            // Total recaudado
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT COALESCE(SUM(monto_donacion), 0) FROM donacion")) {
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) stats.setTotalRecaudado(rs.getBigDecimal(1));
+            }
+            // Número de donantes únicos
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(DISTINCT id_usuario) FROM donacion WHERE id_usuario IS NOT NULL")) {
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) stats.setNumeroDonantes(rs.getInt(1));
+            }
+            // Campañas activas
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM campana WHERE estado = 'activa'")) {
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) stats.setCampanasActivas(rs.getInt(1));
+            }
+            // Eventos realizados
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM evento_recaudacion WHERE estado = 'finalizado'")) {
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) stats.setEventosRealizados(rs.getInt(1));
+            }
+            // Proyectos financiados
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM proyecto_financiado WHERE estado = 'activo'")) {
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) stats.setProyectosFinanciados(rs.getInt(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stats;
+    }
+
+    // Historial de actividades solo para el usuario autenticado
     public List<Actividad> obtenerHistorialActividadesPorUsuario(int idUsuario) {
         List<Actividad> actividades = new ArrayList<>();
         String sql = "SELECT a.id_actividad, a.nombre_actividad, a.fecha, a.hora_inicio, a.lugar, a.responsable, a.descripcion " +
