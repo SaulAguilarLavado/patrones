@@ -16,10 +16,31 @@ public class ProcedimientoInsertEventoRecaudacion implements ProcedimientoProtot
     }
 
     @Override
+    public boolean validarParametros(Object... parametros) {
+        return parametros.length == 8 && 
+               parametros[0] instanceof String &&    // nombre_evento
+               parametros[1] instanceof BigDecimal && // meta_recaudacion
+               parametros[2] instanceof String &&    // fecha_evento
+               parametros[3] instanceof String &&    // lugar_evento
+               parametros[4] instanceof String &&    // tipo_evento
+               parametros[5] instanceof BigDecimal && // gastos_estimados
+               parametros[6] instanceof Integer &&   // id_usuario_organizador
+               parametros[7] instanceof Integer;     // id_campana
+    }
+
+    @Override
+    public String getDescripcionParametros() {
+        return "Se requieren 8 parámetros: nombre_evento (String), meta_recaudacion (BigDecimal), " +
+               "fecha_evento (String), lugar_evento (String), tipo_evento (String), " +
+               "gastos_estimados (BigDecimal), id_usuario_organizador (Integer), id_campana (Integer)";
+    }
+
+    @Override
     public void ejecutar(Object... parametros) {
-        if (parametros.length != 8) {
-            throw new IllegalArgumentException("Se requieren 8 parámetros: nombre_evento, meta_recaudacion, fecha_evento, lugar_evento, tipo_evento, gastos_estimados, id_usuario_organizador, id_campana");
+        if (!validarParametros(parametros)) {
+            throw new IllegalArgumentException("Error en " + getTipo() + ": " + getDescripcionParametros());
         }
+        
         Connection conn = ConexionBD.getInstancia().getConexion();
         try (CallableStatement stmt = conn.prepareCall("{call " + nombreProcedimiento + "(?, ?, ?, ?, ?, ?, ?, ?)}")) {
             stmt.setString(1, (String) parametros[0]);
@@ -34,6 +55,7 @@ public class ProcedimientoInsertEventoRecaudacion implements ProcedimientoProtot
             System.out.println("Evento de recaudación insertado correctamente.");
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error al insertar evento de recaudación: " + e.getMessage());
         }
     }
 }

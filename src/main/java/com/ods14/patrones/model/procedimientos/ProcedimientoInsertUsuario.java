@@ -15,10 +15,23 @@ public class ProcedimientoInsertUsuario implements ProcedimientoPrototype {
     }
 
     @Override
+    public boolean validarParametros(Object... parametros) {
+        return parametros.length == 2 && 
+               parametros[0] instanceof String && 
+               parametros[1] instanceof String;
+    }
+
+    @Override
+    public String getDescripcionParametros() {
+        return "Se requieren 2 parámetros: nombre_usuario (String), contrasena (String)";
+    }
+
+    @Override
     public void ejecutar(Object... parametros) {
-        if (parametros.length != 2) {
-            throw new IllegalArgumentException("Se requieren 2 parámetros: nombre_usuario y contrasena");
+        if (!validarParametros(parametros)) {
+            throw new IllegalArgumentException("Error en " + getTipo() + ": " + getDescripcionParametros());
         }
+        
         Connection conn = ConexionBD.getInstancia().getConexion();
         try (CallableStatement stmt = conn.prepareCall("{call " + nombreProcedimiento + "(?, ?)}")) {
             stmt.setString(1, (String) parametros[0]);
@@ -26,8 +39,8 @@ public class ProcedimientoInsertUsuario implements ProcedimientoPrototype {
             stmt.execute();
             System.out.println("Usuario insertado correctamente.");
         } catch (SQLException e) {
-            // Lanza la excepción para que el controlador pueda capturarla
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException("Error al insertar usuario: " + e.getMessage());
         }
     }
 }

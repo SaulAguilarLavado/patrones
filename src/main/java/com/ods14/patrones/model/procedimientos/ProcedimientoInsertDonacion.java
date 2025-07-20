@@ -16,10 +16,31 @@ public class ProcedimientoInsertDonacion implements ProcedimientoPrototype {
     }
 
     @Override
+    public boolean validarParametros(Object... parametros) {
+        return parametros.length == 8 && 
+               parametros[0] instanceof String &&    // nombre_donante
+               parametros[1] instanceof BigDecimal && // monto_donacion
+               parametros[2] instanceof String &&    // tipo_donacion
+               parametros[3] instanceof String &&    // proyecto_especifico
+               parametros[4] instanceof String &&    // reconocimiento
+               parametros[5] instanceof String &&    // metodo_pago
+               parametros[6] instanceof Integer &&   // id_usuario
+               parametros[7] instanceof Integer;     // id_campana
+    }
+
+    @Override
+    public String getDescripcionParametros() {
+        return "Se requieren 8 parámetros: nombre_donante (String), monto_donacion (BigDecimal), " +
+               "tipo_donacion (String), proyecto_especifico (String), reconocimiento (String), " +
+               "metodo_pago (String), id_usuario (Integer), id_campana (Integer)";
+    }
+
+    @Override
     public void ejecutar(Object... parametros) {
-        if (parametros.length != 8) {
-            throw new IllegalArgumentException("Se requieren 8 parámetros: nombre_donante, monto_donacion, tipo_donacion, proyecto_especifico, reconocimiento, metodo_pago, id_usuario, id_campana");
+        if (!validarParametros(parametros)) {
+            throw new IllegalArgumentException("Error en " + getTipo() + ": " + getDescripcionParametros());
         }
+        
         Connection conn = ConexionBD.getInstancia().getConexion();
         try (CallableStatement stmt = conn.prepareCall("{call " + nombreProcedimiento + "(?, ?, ?, ?, ?, ?, ?, ?)}")) {
             stmt.setString(1, (String) parametros[0]);
@@ -34,6 +55,7 @@ public class ProcedimientoInsertDonacion implements ProcedimientoPrototype {
             System.out.println("Donación insertada correctamente.");
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error al insertar donación: " + e.getMessage());
         }
     }
 }

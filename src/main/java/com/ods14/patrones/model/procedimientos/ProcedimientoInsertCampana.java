@@ -15,10 +15,30 @@ public class ProcedimientoInsertCampana implements ProcedimientoPrototype {
     }
 
     @Override
+    public boolean validarParametros(Object... parametros) {
+        return parametros.length == 7 && 
+               parametros[0] instanceof String &&  // nombre_campana
+               parametros[1] instanceof String &&  // objetivo_principal
+               parametros[2] instanceof String &&  // publico_objetivo
+               parametros[3] instanceof String &&  // mensaje_clave
+               parametros[4] instanceof Integer && // duracion_dias
+               parametros[5] instanceof String &&  // medios_utilizados
+               parametros[6] instanceof Integer;   // id_usuario_creador
+    }
+
+    @Override
+    public String getDescripcionParametros() {
+        return "Se requieren 7 parámetros: nombre_campana (String), objetivo_principal (String), " +
+               "publico_objetivo (String), mensaje_clave (String), duracion_dias (Integer), " +
+               "medios_utilizados (String), id_usuario_creador (Integer)";
+    }
+
+    @Override
     public void ejecutar(Object... parametros) {
-        if (parametros.length != 7) {
-            throw new IllegalArgumentException("Se requieren 7 parámetros: nombre_campana, objetivo_principal, publico_objetivo, mensaje_clave, duracion_dias, medios_utilizados, id_usuario_creador");
+        if (!validarParametros(parametros)) {
+            throw new IllegalArgumentException("Error en " + getTipo() + ": " + getDescripcionParametros());
         }
+        
         Connection conn = ConexionBD.getInstancia().getConexion();
         try (CallableStatement stmt = conn.prepareCall("{call " + nombreProcedimiento + "(?, ?, ?, ?, ?, ?, ?)}")) {
             stmt.setString(1, (String) parametros[0]);
@@ -32,6 +52,7 @@ public class ProcedimientoInsertCampana implements ProcedimientoPrototype {
             System.out.println("Campaña insertada correctamente.");
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error al insertar campaña: " + e.getMessage());
         }
     }
 }
