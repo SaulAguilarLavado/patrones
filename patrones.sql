@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS usuario (
     nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL
 );
+SELECT * FROM usuario;
 
 -- Tabla de contribuciones (sin cambios)
 CREATE TABLE IF NOT EXISTS contribucion (
@@ -94,6 +95,7 @@ CREATE TABLE IF NOT EXISTS campana (
     id_usuario_creador INT,
     FOREIGN KEY (id_usuario_creador) REFERENCES usuario(id_usuario)
 );
+SELECT * FROM campana;
 
 -- 2. TABLA DE DONACIONES
 CREATE TABLE IF NOT EXISTS donacion (
